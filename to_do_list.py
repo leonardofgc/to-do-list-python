@@ -37,16 +37,25 @@ def adicionar_tarefa(tarefas):
     else:
          print("Tarefa vazia! Não foi adicionada.")
 
-def remover_tarefa(tarefas):
+def remover_tarefa(tarefas, remover_todas_tarefas = False):
     listar_tarefas(tarefas)
     try:
-        num = int(input("Digite o número da tarefa para remover: "))
-        if 1 <= num <= len(tarefas):
-            removida = tarefas.pop(num - 1)
-            salvar_tarefas(tarefas)
-            print(f"Tarefa '{removida}' removida.")
+        if not remover_todas_tarefas:
+            num = int(input("Digite o número da tarefa para remover: "))
+            if 1 <= num <= len(tarefas):
+                removida = tarefas.pop(num - 1)
+                salvar_tarefas(tarefas)
+                print(f"Tarefa '{removida}' removida.")
+            else:
+                print("Número inválido.")
         else:
-            print("Número inválido.")
+            #tarefas.clear()
+            while tarefas: # enquanto a lista não estiver vazia
+                tarefa_removida = tarefas.pop() # remove o último item da lista
+                print(f"Removendo: {tarefa_removida}")
+            salvar_tarefas(tarefas)
+            print("Todas tarefas removidas")
+            
     except ValueError:
         print("Entrada inválida.")
 
@@ -57,7 +66,8 @@ def menu():
         print("1. Listar tarefas")
         print("2. Adiciona tarefas")
         print("3. Remover tarefa")
-        print("4. Sair")
+        print("4. Remover todas as tarefas")
+        print("5. Sair")
 
         escolha = input("Escolha uma opção: ")
 
@@ -68,6 +78,8 @@ def menu():
         elif escolha == '3':
             remover_tarefa(tarefas)
         elif escolha == '4':
+            remover_tarefa(tarefas, True)
+        elif escolha == '5':
             print("Saindo...")
             break
         else:
